@@ -357,12 +357,29 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
     /**
      * Metodo <I>keyPressed</I> sobrescrito de la interface <code>KeyListener</code>.<P>
      * En este metodo maneja el evento que se genera al presionar cualquier la tecla.
-     * @param keyevent es el <code>evento</code> generado al presionar las teclas.
+     * @param keyEvent es el <code>evento</code> generado al presionar las teclas.
      */
     @Override
-    public void keyPressed(KeyEvent keyevent) {
+    public void keyPressed(KeyEvent keyEvent) {
         
-        
+        if (keyEvent.getKeyCode() == KeyEvent.VK_W) { 
+            iDireccion = 1; //Cambio direccion
+        }
+        if (keyEvent.getKeyCode() == KeyEvent.VK_S) { 
+            iDireccion = 2; //Cambio direccion
+        }
+        if (keyEvent.getKeyCode() == KeyEvent.VK_A) { 
+            iDireccion = 3; //Cambio direccion
+        }
+        if (keyEvent.getKeyCode() == KeyEvent.VK_D) { 
+            iDireccion = 4; //Cambio direccion
+        }
+        if (keyEvent.getKeyCode() == KeyEvent.VK_P) {
+            iPausa = iPausa * -1;
+        }
+        if (keyEvent.getKeyCode() == KeyEvent. VK_ESCAPE) {
+            bFin = true;    //Cambio direccion
+        }
         repaint();
         
     }
@@ -371,21 +388,21 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
     /**
      * Metodo <I>keyTyped</I> sobrescrito de la interface <code>KeyListener</code>.<P>
      * En este metodo maneja el evento que se genera al presionar una tecla que no es de accion.
-     * @param keyevent es el <code>evento</code> que se genera en al presionar las teclas.
+     * @param keyEvent es el <code>evento</code> que se genera en al presionar las teclas.
      */
     
     @Override
-    public void keyTyped(KeyEvent keyevent) {
+    public void keyTyped(KeyEvent keyEvent) {
         
     }
     
     /**
      * Metodo <I>keyReleased</I> sobrescrito de la interface <code>KeyListener</code>.<P>
      * En este metodo maneja el evento que se genera al soltar la tecla presionada.
-     * @param e es el <code>evento</code> que se genera en al soltar las teclas.
+     * @param keyEvent es el <code>evento</code> que se genera en al soltar las teclas.
      */
     @Override
-    public void keyReleased(KeyEvent keyevent) {
+    public void keyReleased(KeyEvent keyEvent) {
         
     }
     /**
