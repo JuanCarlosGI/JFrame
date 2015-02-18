@@ -161,7 +161,37 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
      * 
      */
     public void actualiza(){
+        if (iPausa == -1 && !bFin) {
+            switch(iDireccion) {
+                case 1: { //se mueve hacia arriba
+                    basMalo.setY(basMalo.getY() - 2);
+                    break;    
+                }
+                case 2: { //se mueve hacia abajo
+                    basMalo.setY(basMalo.getY() + 2);
+                    break;    
+                }
+                case 3: { //se mueve hacia izquierda
+                    basMalo.setX(basMalo.getX() - 2);
+                    break;    
+                }
+                case 4: { //se mueve hacia derecha
+                    basMalo.setX(basMalo.getX() + 2);
+                    break;    	
+                }
+            }
             
+            //muevo a los Juanitos
+            for (Base basJuanito:lklJuanitos) {
+                basJuanito.setY(basJuanito.getY() + (6 - iVidas));
+            }
+            
+            //Muevo a los fantasmas
+            for (Base basFantasma:lklFantasmas) {
+                int iRandom = (int) (Math.random() * 4) + 3;
+                basFantasma.setX(basFantasma.getX() + iRandom);
+            }
+        }    
             
             
     }
