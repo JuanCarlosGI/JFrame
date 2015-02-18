@@ -55,7 +55,7 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
      */
 	public JuegoJFrame() {
         
-            
+        
         URL urlImagenPrincipal = this.getClass().getResource("juanito.gif");
         URL urlImagenFantasma = this.getClass().getResource("fantasmita.gif");
         
@@ -77,6 +77,7 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         for(int iI = 0; iI < iRandom ; iI++) {
             int iPosRandX  = (int) (Math.random() * getWidth());
             int iPosRandY  = (int) (Math.random() * getHeight()) * -1;
+            
             Base basJuanito = new Base(iPosRandX, iPosRandY, getWidth() / iMAXANCHO,
                 getHeight() / iMAXALTO,
                 Toolkit.getDefaultToolkit().getImage(urlImagenPrincipal));
@@ -301,17 +302,10 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
             graGrafica = imaDBImage.getGraphics ();
 	}
         
-        /*
-        // Actualiza la imagen de fondo.
-        URL urlImagenFondo = this.getClass().getResource("Ciudad.png");
-        Image imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
-         graGraficaApplet.drawImage(imaImagenFondo, 0, 0, getWidth(), getHeight(), this);
-*/
         Image imgFondo = Toolkit.getDefaultToolkit().getImage(this.getClass().
                 getResource("Ciudad.png"));
         
         graGrafica.drawImage(imgFondo, 0,0, this);
-        
         
         // Actualiza el Foreground.
         graGrafica.setColor (getForeground());
@@ -345,8 +339,8 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
             //Dibuja la imagen de malo en el Applet
             basMalo.paint(graDibujo, this);
             graDibujo.setColor(Color.RED); //Escribo en color rojo
-            graDibujo.drawString("Vidas: " + iVidas, 10, 10);   //Escribo vidas
-            graDibujo.drawString("Puntos: " + iScore, 10, 30);  // escribo score
+            graDibujo.drawString("Vidas: " + iVidas, 10, 40);   //Escribo vidas
+            graDibujo.drawString("Puntos: " + iScore, 10, 60);  // escribo score
         } // sino se ha cargado se dibuja un mensaje 
         else {
                 //Da un mensaje mientras se carga el dibujo	
