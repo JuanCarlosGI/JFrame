@@ -226,7 +226,7 @@ public class Juego extends Applet implements Runnable, KeyListener {
         //Si se sale hacia la derecha
         if (basMalo.getX() + basMalo.getAncho() > getWidth()) { 
             iDireccion = 0;
-            basMalo.setY(getWidth() - basMalo.getAncho());
+            basMalo.setX(getWidth() - basMalo.getAncho());
         }
         
         //Checo colision con los juanitos
