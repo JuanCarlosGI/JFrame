@@ -91,10 +91,13 @@ public class Juego extends Applet implements Runnable, KeyListener {
         iRandom = (int) (Math.random() * 3) + 8; //Cantidad de fantasmas
         for(int iI = 0; iI < iRandom ; iI++) {
             int iPosRandX  = (int) (Math.random() * getWidth()) * -1;
-            int iPosRandY  = (int) (Math.random() * getHeight());
+            int iPosRandY  = (int) (Math.random() * (getHeight()));
             Base basFantasma = new Base(iPosRandX, iPosRandY, getWidth() / iMAXANCHO,
                 getHeight() / iMAXALTO,
                 Toolkit.getDefaultToolkit().getImage(urlImagenFantasma));
+            iPosRandY = (int) (Math.random() * (getHeight() - 
+                    basFantasma.getAlto()));
+            basFantasma.setY(iPosRandY);
             lklFantasmas.add(basFantasma);
         }
         
@@ -253,7 +256,8 @@ public class Juego extends Applet implements Runnable, KeyListener {
         for(Base basFantasma:lklFantasmas) {
             if (basFantasma.intersecta(basMalo)) {
                 int iPosRandX  = (int) (Math.random() * getWidth()) * -1;
-                int iPosRandY  = (int) (Math.random() * getHeight());
+                int iPosRandY  = (int) (Math.random() * (getHeight() -
+                        basFantasma.getAlto()));
                 basFantasma.setX(iPosRandX);
                 basFantasma.setY(iPosRandY);
                 adcSonidoChimpy2.play();
@@ -276,7 +280,8 @@ public class Juego extends Applet implements Runnable, KeyListener {
         for(Base basFantasma:lklFantasmas) {
             if (basFantasma.getX() + basFantasma.getAncho() > getWidth()){
                 int iPosRandX  = (int) (Math.random() * getWidth()) * -1;
-                int iPosRandY  = (int) (Math.random() * getHeight());
+                int iPosRandY  = (int) (Math.random() * (getHeight() -
+                        basFantasma.getAlto()));
                 basFantasma.setX(iPosRandX);
                 basFantasma.setY(iPosRandY);
             }
