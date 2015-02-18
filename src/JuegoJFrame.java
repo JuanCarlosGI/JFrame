@@ -203,7 +203,82 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
      */
     public void checaColision(){
         
+        //Si se sale hacia arriba
+        if (basMalo.getY() < 0) {
+            iDireccion = 0;
+            basMalo.setY(0);
+        }	
+        //Si se sale hacia abajo
+        if (basMalo.getY() + basMalo.getAlto() > getHeight()) {
+            iDireccion = 0;
+            basMalo.setY(getHeight() - basMalo.getAlto());
+        }
+        //Si se sale hacia la izquierda
+        if (basMalo.getX() < 0) {
+            iDireccion = 0;
+            basMalo.setX(0);
+        }
+        //Si se sale hacia la derecha
+        if (basMalo.getX() + basMalo.getAncho() > getWidth()) { 
+            iDireccion = 0;
+            basMalo.setX(getWidth() - basMalo.getAncho());
+        }
         
+        //Checo colision con los juanitos
+        for(Base basJuanito:lklJuanitos) {
+            if (basJuanito.intersecta(basMalo)) {
+                iJuanitosChocaron++;
+                int iPosRandX  = (int) (Math.random() * (getWidth() - 
+                        basJuanito.getAncho()));
+                int iPosRandY  = (int) (Math.random() * getHeight()) * -1;
+                basJuanito.setX(iPosRandX);
+                basJuanito.setY(iPosRandY);
+                scSonidoChimpy1.play();
+                if (iJuanitosChocaron == 5) {
+                    iVidas--;
+                    iJuanitosChocaron = 0;
+                }
+            }
+        }
+        
+        //Checo cliosion con fantasmas
+        for(Base basFantasma:lklFantasmas) {
+            if (basFantasma.intersecta(basMalo)) {
+                int iPosRandX  = (int) (Math.random() * getWidth()) * -1;
+                int iPosRandY  = (int) (Math.random() * (getHeight() -
+                        basFantasma.getAlto()));
+                basFantasma.setX(iPosRandX);
+                basFantasma.setY(iPosRandY);
+                scSonidoChimpy2.play();
+                iScore++;
+            }
+        }
+        
+        //Checo clision de Juanitos con piso
+        for(Base basJuanito:lklJuanitos) {
+            if (basJuanito.getY() + basJuanito.getAlto() > getHeight()) {
+                int iPosRandX  = (int) (Math.random() * (getWidth() - 
+                        basJuanito.getAncho()));
+                int iPosRandY  = (int) (Math.random() * getHeight()) * -1;
+                basJuanito.setX(iPosRandX);
+                basJuanito.setY(iPosRandY);
+            }
+        }
+        
+        //Checo colision de fantasmas con pared
+        for(Base basFantasma:lklFantasmas) {
+            if (basFantasma.getX() + basFantasma.getAncho() > getWidth()){
+                int iPosRandX  = (int) (Math.random() * getWidth()) * -1;
+                int iPosRandY  = (int) (Math.random() * (getHeight() -
+                        basFantasma.getAlto()));
+                basFantasma.setX(iPosRandX);
+                basFantasma.setY(iPosRandY);
+            }
+        }
+        
+        if (iVidas == 0) {
+            bFin = true;    //Hago que se termine el juego
+        }
         
         
         
