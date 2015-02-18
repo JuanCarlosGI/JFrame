@@ -45,8 +45,11 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
     private int iJuanitosChocaron;  //Cuantos Juanitos han chocado
     private int iPausa; //Para ver si está en pausa
     private boolean bFin; //Checa si se terminó el juego
+    private Animacion animJuanito; // la animacion de juanito
+    private Animacion animFantasmita; // la animacion de fantasmita
+    private Animacion animChimpy; // la animacion de chimpy
     
-    
+    private long lTiempoActual;
     
     /**
      * Constructor de la clase <code>JuegoJFrame</code>.
@@ -72,6 +75,37 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         iVidas = (int) (Math.random() * 2) + 3; //Inicio las vidas entre 3 y 5
         iScore = 0; //Inicio el score
                 
+        
+        //Se cargan las imágenes(cuadros) para la animación de juanito
+	Image imgjuanito1 = Toolkit.getDefaultToolkit().getImage(this.getClass()
+                .getResource("Images/juanito1.png"));
+	Image imgjuanito2 = Toolkit.getDefaultToolkit().getImage(this.getClass()
+                .getResource("Images/juanito2.png"));
+	Image imgjuanito3 = Toolkit.getDefaultToolkit().getImage(this.getClass()
+                .getResource("Images/juanito3.png"));
+	Image imgjuanito4 = Toolkit.getDefaultToolkit().getImage(this.getClass()
+                .getResource("Images/juanito4.png"));
+	Image imgjuanito5 = Toolkit.getDefaultToolkit().getImage(this.getClass()
+                .getResource("Images/juanito5.png"));
+	Image imgjuanito6 = Toolkit.getDefaultToolkit().getImage(this.getClass()
+                .getResource("Images/juanito6.png"));
+	Image imgjuanito7 = Toolkit.getDefaultToolkit().getImage(this.getClass()
+                .getResource("Images/juanito7.png"));
+	Image imgjuanito8 = Toolkit.getDefaultToolkit().getImage(this.getClass()
+                .getResource("Images/juanito8.png"));
+		
+	//Se crea la animación
+	animJuanito = new Animacion();
+	animJuanito.sumaCuadro(imgjuanito1, 100);
+        animJuanito.sumaCuadro(imgjuanito2, 100);
+        animJuanito.sumaCuadro(imgjuanito3, 100);
+        animJuanito.sumaCuadro(imgjuanito4, 100);
+        animJuanito.sumaCuadro(imgjuanito5, 100);
+        animJuanito.sumaCuadro(imgjuanito6, 100);
+        animJuanito.sumaCuadro(imgjuanito7, 100);
+        animJuanito.sumaCuadro(imgjuanito8, 100);
+		
+        
         // se crean a los Juanitos
         int iRandom = (int) (Math.random() * 6) + 10; //Cantidad de Juanitos
         for(int iI = 0; iI < iRandom ; iI++) {
@@ -80,12 +114,25 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
             
             Base basJuanito = new Base(iPosRandX, iPosRandY, getWidth() / iMAXANCHO,
                 getHeight() / iMAXALTO,
-                Toolkit.getDefaultToolkit().getImage(urlImagenPrincipal));
+                imgjuanito1);
             iPosRandX = (int) (Math.random() * (getWidth() - 
                         basJuanito.getAncho()));
             basJuanito.setX(iPosRandX);
             lklJuanitos.add(basJuanito);
         }
+        
+         //Se cargan las imágenes(cuadros) para la animación de fantasmita
+	Image imgFantasmita1 = Toolkit.getDefaultToolkit().getImage(this.getClass()
+                .getResource("Images/fantasmita1.png"));
+	Image imgFantasmita2 = Toolkit.getDefaultToolkit().getImage(this.getClass()
+                .getResource("Images/fantasmita2.png"));
+	Image imgFantasmita3 = Toolkit.getDefaultToolkit().getImage(this.getClass()
+                .getResource("Images/fantasmita3.png"));
+        
+        animFantasmita = new Animacion();
+	animFantasmita.sumaCuadro(imgFantasmita1, 100);
+        animFantasmita.sumaCuadro(imgFantasmita2, 100);
+        animFantasmita.sumaCuadro(imgFantasmita3, 100);
         
         //Se crean los fantasmas
         iRandom = (int) (Math.random() * 3) + 8; //Cantidad de fantasmas
@@ -94,22 +141,28 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
             int iPosRandY  = (int) (Math.random() * (getHeight()));
             Base basFantasma = new Base(iPosRandX, iPosRandY, getWidth() / iMAXANCHO,
                 getHeight() / iMAXALTO,
-                Toolkit.getDefaultToolkit().getImage(urlImagenFantasma));
+                imgFantasmita1);
             iPosRandY = (int) (Math.random() * (getHeight() - 
                     basFantasma.getAlto()));
             basFantasma.setY(iPosRandY);
             lklFantasmas.add(basFantasma);
         }
         
-        // defino la imagen del malo
-	URL urlImagenMalo = this.getClass().getResource("chimpy.gif");
+        //Se cargan las imágenes(cuadros) para la animación de chimpy
+	Image imgChimpy1 = Toolkit.getDefaultToolkit().getImage(this.getClass()
+                .getResource("Images/Chimpy1.png"));
+	Image imgChimpy2 = Toolkit.getDefaultToolkit().getImage(this.getClass()
+                .getResource("Images/chimpy2.png"));
+        
+        animChimpy = new Animacion();
+	animChimpy.sumaCuadro(imgChimpy1, 100);
+	animChimpy.sumaCuadro(imgChimpy2, 100);
         
         // se crea el objeto para malo 
         int iPosX = (iMAXANCHO - 1) * getWidth() / iMAXANCHO;
         int iPosY = (iMAXALTO - 1) * getHeight() / iMAXALTO;        
 	basMalo = new Base(getWidth() /2,getHeight() / 2, getWidth() / iMAXANCHO,
-                getHeight() / iMAXALTO,
-                Toolkit.getDefaultToolkit().getImage(urlImagenMalo));
+                getHeight() / iMAXALTO,imgChimpy1);
         
         //defino el sonido 1
         scSonidoChimpy1 = new SoundClip("monkey1.wav");
@@ -141,6 +194,8 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
            se checa si hubo colisiones para desaparecer jugadores o corregir
            movimientos y se vuelve a pintar todo
         */ 
+        lTiempoActual = System.currentTimeMillis();
+        
         while (!bFin) {
             actualiza();
             checaColision();
@@ -162,7 +217,25 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
      * 
      */
     public void actualiza(){
+        
+        
+        
         if (iPausa == -1 && !bFin) {
+            //Determina el tiempo que ha transcurrido desde que el Applet inicio su ejecución
+            long tiempoTranscurrido = System.currentTimeMillis() - lTiempoActual;
+            
+            //Guarda el tiempo actual
+            lTiempoActual += tiempoTranscurrido;
+       	 
+            //Actualiza la animación de juanito en base al tiempo transcurrido
+            animJuanito.actualiza(tiempoTranscurrido);
+		
+            //Actualiza la animación del fantasmita en base al tiempo transcurrido
+            animFantasmita.actualiza(tiempoTranscurrido);
+            
+            //Actualiza la animación de chimpy en base al tiempo transcurrido
+            animChimpy.actualiza(tiempoTranscurrido);
+            
             switch(iDireccion) {
                 case 1: { //se mueve hacia arriba
                     basMalo.setY(basMalo.getY() - 2);
@@ -330,14 +403,16 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         if (basMalo != null) {
             //Dibuja la imagen de los Juanitos
             for (Base basJuanito:lklJuanitos) {
-                basJuanito.paint(graDibujo, this);
+                basJuanito.paint(graDibujo, this, animJuanito);
+                
             }
             //dibujo a los fantasmas
             for (Base basFantasma:lklFantasmas) {
-                basFantasma.paint(graDibujo,this);
+                basFantasma.paint(graDibujo,this, animFantasmita);
             }
             //Dibuja la imagen de malo en el Applet
-            basMalo.paint(graDibujo, this);
+            
+            basMalo.paint(graDibujo, this, animChimpy);
             graDibujo.setColor(Color.RED); //Escribo en color rojo
             graDibujo.drawString("Vidas: " + iVidas, 10, 40);   //Escribo vidas
             graDibujo.drawString("Puntos: " + iScore, 10, 60);  // escribo score
