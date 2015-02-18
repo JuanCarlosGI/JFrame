@@ -365,33 +365,33 @@ public class Juego extends Applet implements Runnable, KeyListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
+    public void keyTyped(KeyEvent keyEvent) {
 
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent keyEvent) {
 
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_W) { 
+    public void keyReleased(KeyEvent keyEvent) {
+        if (keyEvent.getKeyCode() == KeyEvent.VK_W) { 
             iDireccion = 1; //Cambio direccion
         }
-        if (e.getKeyCode() == KeyEvent.VK_S) { 
+        if (keyEvent.getKeyCode() == KeyEvent.VK_S) { 
             iDireccion = 2; //Cambio direccion
         }
-        if (e.getKeyCode() == KeyEvent.VK_A) { 
+        if (keyEvent.getKeyCode() == KeyEvent.VK_A) { 
             iDireccion = 3; //Cambio direccion
         }
-        if (e.getKeyCode() == KeyEvent.VK_D) { 
+        if (keyEvent.getKeyCode() == KeyEvent.VK_D) { 
             iDireccion = 4; //Cambio direccion
         }
-        if (e.getKeyCode() == KeyEvent.VK_P) {
+        if (keyEvent.getKeyCode() == KeyEvent.VK_P) {
             iPausa = iPausa * -1;
         }
-        if (e.getKeyCode() == KeyEvent. VK_ESCAPE) {
+        if (keyEvent.getKeyCode() == KeyEvent. VK_ESCAPE) {
             bFin = true;    //Cambio direccion
         }
     }
