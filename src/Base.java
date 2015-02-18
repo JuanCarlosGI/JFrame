@@ -154,6 +154,21 @@ public class Base {
     public void paint(Graphics graGrafico, ImageObserver imoObserver) {
         graGrafico.drawImage(getImagen(), getX(), getY(), getAncho(), getAlto(), imoObserver);
     }
+     /**
+     * paint
+     * 
+     * Metodo para pintar el animal
+     * 
+     * @param graGrafico    objeto de la clase <code>Graphics</code> para graficar
+     * @param imoObserver  objeto de la clase <code>ImageObserver</code> es el 
+     *    Applet donde se pintara
+     * @param animObj objeto de la clase <code>Animacion</code> para obtener las imagenes
+     * 
+     */
+    public void paint(Graphics graGrafico, ImageObserver imoObserver, Animacion animObj) {
+        graGrafico.drawImage(animObj.getImagen(), getX(), getY(), getAncho(), getAlto(), imoObserver);
+    }
+
 
     /**
      * equals
