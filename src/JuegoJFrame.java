@@ -1,9 +1,11 @@
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.net.URL;
 import java.util.LinkedList;
 import javax.swing.JFrame;
 
@@ -53,8 +55,70 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
 	public JuegoJFrame() {
         
             
-            
-            
+        URL urlImagenPrincipal = this.getClass().getResource("juanito.gif");
+        URL urlImagenFantasma = this.getClass().getResource("fantasmita.gif");
+        
+        iDireccion = 0; //Nena no se mueve
+        
+        iPausa = -1;    //Inicio sin estar en pausa
+        bFin = false;   //No se ha terminado el juego
+        
+        lklFantasmas = new LinkedList<Base>();  //Creo la lista de fantasmas
+        lklJuanitos = new LinkedList<Base>();   //Creo la lista de Juanitos
+        
+        iJuanitosChocaron = 0; //Ha chocado con 0 Juanitos
+        
+        iVidas = (int) (Math.random() * 2) + 3; //Inicio las vidas entre 3 y 5
+        iScore = 0; //Inicio el score
+                
+        // se crean a los Juanitos
+        int iRandom = (int) (Math.random() * 6) + 10; //Cantidad de Juanitos
+        for(int iI = 0; iI < iRandom ; iI++) {
+            int iPosRandX  = (int) (Math.random() * getWidth());
+            int iPosRandY  = (int) (Math.random() * getHeight()) * -1;
+            Base basJuanito = new Base(iPosRandX, iPosRandY, getWidth() / iMAXANCHO,
+                getHeight() / iMAXALTO,
+                Toolkit.getDefaultToolkit().getImage(urlImagenPrincipal));
+            iPosRandX = (int) (Math.random() * (getWidth() - 
+                        basJuanito.getAncho()));
+            basJuanito.setX(iPosRandX);
+            lklJuanitos.add(basJuanito);
+        }
+        
+        //Se crean los fantasmas
+        iRandom = (int) (Math.random() * 3) + 8; //Cantidad de fantasmas
+        for(int iI = 0; iI < iRandom ; iI++) {
+            int iPosRandX  = (int) (Math.random() * getWidth()) * -1;
+            int iPosRandY  = (int) (Math.random() * (getHeight()));
+            Base basFantasma = new Base(iPosRandX, iPosRandY, getWidth() / iMAXANCHO,
+                getHeight() / iMAXALTO,
+                Toolkit.getDefaultToolkit().getImage(urlImagenFantasma));
+            iPosRandY = (int) (Math.random() * (getHeight() - 
+                    basFantasma.getAlto()));
+            basFantasma.setY(iPosRandY);
+            lklFantasmas.add(basFantasma);
+        }
+        
+        // defino la imagen del malo
+	URL urlImagenMalo = this.getClass().getResource("chimpy.gif");
+        
+        // se crea el objeto para malo 
+        int iPosX = (iMAXANCHO - 1) * getWidth() / iMAXANCHO;
+        int iPosY = (iMAXALTO - 1) * getHeight() / iMAXALTO;        
+	basMalo = new Base(getWidth() /2,getHeight() / 2, getWidth() / iMAXANCHO,
+                getHeight() / iMAXALTO,
+                Toolkit.getDefaultToolkit().getImage(urlImagenMalo));
+        
+        //defino el sonido 1
+        scSonidoChimpy1 = new SoundClip("monkey1.wav");
+        
+        //defino el sonido 2
+        scSonidoChimpy2 = new SoundClip("monkey2.wav");
+                
+                
+        //Hago que se active con teclado
+        addKeyListener(this);  
+        
         // Declaras un hilo
         Thread t = new Thread (this);
 	// Empieza el hilo
