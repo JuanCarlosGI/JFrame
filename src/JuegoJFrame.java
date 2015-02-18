@@ -27,8 +27,8 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
     private Base basMalo;         // Objeto malo
     
     /* objetos para manejar el buffer del Applet y este no parpadee */
-    private Image    imaImagenApplet;   // Imagen a proyectar en Applet	
-    private Graphics graGraficaApplet;  // Objeto grafico de la Imagen
+    private Image    imaDBImage;   // Imagen a proyectar en Applet	
+    private Graphics graGrafica;  // Objeto grafico de la Imagen
     
     private SoundClip scSonidoChimpy1;  // Objeto sonido de Chimpy 
     private SoundClip scSonidoChimpy2;  //Objeto sonido de Chimpy
@@ -155,8 +155,7 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
 	}
     }
         
-    
-    
+   
     /**
      * Metodo usado para actualizar la posicion de los objetos
      * 
@@ -295,23 +294,31 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
     
     public void paint(Graphics graGrafico) {
         // Inicializan el DoubleBuffer
-        if (imaImagenApplet == null) {
-                imaImagenApplet = createImage (this.getSize().width, 
-                        this.getSize().height);
-                graGraficaApplet = imaImagenApplet.getGraphics ();
-        }
-
+        
+        // Inicializan el DoubleBuffer
+        if (imaDBImage == null){
+            imaDBImage = createImage (this.getSize().width, this.getSize().height);
+            graGrafica = imaDBImage.getGraphics ();
+	}
+        
+        /*
         // Actualiza la imagen de fondo.
         URL urlImagenFondo = this.getClass().getResource("Ciudad.png");
         Image imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
          graGraficaApplet.drawImage(imaImagenFondo, 0, 0, getWidth(), getHeight(), this);
-
+*/
+        Image imgFondo = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                getResource("Ciudad.png"));
+        
+        graGrafica.drawImage(imgFondo, 0,0, this);
+        
+        
         // Actualiza el Foreground.
-        graGraficaApplet.setColor (getForeground());
-        paint(graGraficaApplet);
+        graGrafica.setColor (getForeground());
+        paint1(graGrafica);
 
         // Dibuja la imagen actualizada
-        graGrafico.drawImage (imaImagenApplet, 0, 0, this);
+        graGrafico.drawImage (imaDBImage, 0, 0, this);
         
         
     }
@@ -434,7 +441,6 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
     public static void main(String[] args) {
         
     	// TODO code application logic here
-    	
         JuegoJFrame jjfJuego = new JuegoJFrame();
     	jjfJuego.setSize(800, 500); // crea la ventana de 800x500
     	jjfJuego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
