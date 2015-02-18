@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -292,8 +293,25 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
      * @param graphics es el <code>objeto grafico</code> usado para dibujar.
      */
     
-    public void paint(Graphics graphics) {
-        
+    public void paint(Graphics graGrafico) {
+        // Inicializan el DoubleBuffer
+        if (imaImagenApplet == null) {
+                imaImagenApplet = createImage (this.getSize().width, 
+                        this.getSize().height);
+                graGraficaApplet = imaImagenApplet.getGraphics ();
+        }
+
+        // Actualiza la imagen de fondo.
+        URL urlImagenFondo = this.getClass().getResource("Ciudad.png");
+        Image imaImagenFondo = Toolkit.getDefaultToolkit().getImage(urlImagenFondo);
+         graGraficaApplet.drawImage(imaImagenFondo, 0, 0, getWidth(), getHeight(), this);
+
+        // Actualiza el Foreground.
+        graGraficaApplet.setColor (getForeground());
+        paint(graGraficaApplet);
+
+        // Dibuja la imagen actualizada
+        graGrafico.drawImage (imaImagenApplet, 0, 0, this);
         
         
     }
@@ -306,8 +324,33 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
      * @param graphics es el <code>objeto grafico</code> usado para dibujar.
      */
     
-    public void paint1 (Graphics graphics){
+    public void paint1 (Graphics graDibujo){
+        // si la imagen ya se cargo
+        if (basMalo != null) {
+            //Dibuja la imagen de los Juanitos
+            for (Base basJuanito:lklJuanitos) {
+                basJuanito.paint(graDibujo, this);
+            }
+            //dibujo a los fantasmas
+            for (Base basFantasma:lklFantasmas) {
+                basFantasma.paint(graDibujo,this);
+            }
+            //Dibuja la imagen de malo en el Applet
+            basMalo.paint(graDibujo, this);
+            graDibujo.setColor(Color.RED); //Escribo en color rojo
+            graDibujo.drawString("Vidas: " + iVidas, 10, 10);   //Escribo vidas
+            graDibujo.drawString("Puntos: " + iScore, 10, 30);  // escribo score
+        } // sino se ha cargado se dibuja un mensaje 
+        else {
+                //Da un mensaje mientras se carga el dibujo	
+                graDibujo.drawString("No se cargo la imagen..", 20, 20);
+        }
         
+        if (bFin){  //Dibujo el fin del juego
+            URL urlImagenFin = this.getClass().getResource("game Over.png");
+            graDibujo.drawImage(Toolkit.getDefaultToolkit().getImage(urlImagenFin)
+                    , getWidth() /2, getHeight() / 2, this);
+        }
         
     }
     
