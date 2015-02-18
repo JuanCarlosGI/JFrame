@@ -1,8 +1,10 @@
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.LinkedList;
 import javax.swing.JFrame;
 
 /*
@@ -17,6 +19,32 @@ import javax.swing.JFrame;
  */
 public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
 
+    private final int iMAXANCHO = 10; // maximo numero de personajes por ancho
+    private final int iMAXALTO = 8;  // maxuimo numero de personajes por alto
+    private Base basMalo;         // Objeto malo
+    
+    /* objetos para manejar el buffer del Applet y este no parpadee */
+    private Image    imaImagenApplet;   // Imagen a proyectar en Applet	
+    private Graphics graGraficaApplet;  // Objeto grafico de la Imagen
+    
+    private SoundClip scSonidoChimpy1;  // Objeto sonido de Chimpy 
+    private SoundClip scSonidoChimpy2;  //Objeto sonido de Chimpy
+    
+    //private AudioClip adcSonidoChimpy1;   // Objeto sonido de Chimpy
+    //private AudioClip adcSonidoChimpy2;   // Objeto sonido de Chimpy
+    
+    //Variables que se usan en el juego
+    private int iVidas; //Vidas
+    private int iScore; //Puntuación
+    private int iDireccion;     //Dirección de Nena
+    private LinkedList<Base> lklFantasmas; //Lista de fantasmas
+    private LinkedList<Base> lklJuanitos; //Lista de Juuanitos
+    private int iJuanitosChocaron;  //Cuantos Juanitos han chocado
+    private int iPausa; //Para ver si está en pausa
+    private boolean bFin; //Checa si se terminó el juego
+    
+    
+    
     /**
      * Constructor de la clase <code>JuegoJFrame</code>.
      * En este metodo se inizializan las variables o se crean los objetos
@@ -162,7 +190,10 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         
     	// TODO code application logic here
     	
-
+        JuegoJFrame jjfJuego = new JuegoJFrame();
+    	jjfJuego.setSize(800, 500); // crea la ventana de 800x500
+    	jjfJuego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	jjfJuego.setVisible(true);
     }
     
     
