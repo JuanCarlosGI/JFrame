@@ -81,6 +81,9 @@ public class Juego extends Applet implements Runnable, KeyListener {
             Base basJuanito = new Base(iPosRandX, iPosRandY, getWidth() / iMAXANCHO,
                 getHeight() / iMAXALTO,
                 Toolkit.getDefaultToolkit().getImage(urlImagenPrincipal));
+            iPosRandX = (int) (Math.random() * (getWidth() - 
+                        basJuanito.getAncho()));
+            basJuanito.setX(iPosRandX);
             lklJuanitos.add(basJuanito);
         }
         
@@ -233,7 +236,8 @@ public class Juego extends Applet implements Runnable, KeyListener {
         for(Base basJuanito:lklJuanitos) {
             if (basJuanito.intersecta(basMalo)) {
                 iJuanitosChocaron++;
-                int iPosRandX  = (int) (Math.random() * getWidth());
+                int iPosRandX  = (int) (Math.random() * (getWidth() - 
+                        basJuanito.getAncho()));
                 int iPosRandY  = (int) (Math.random() * getHeight()) * -1;
                 basJuanito.setX(iPosRandX);
                 basJuanito.setY(iPosRandY);
@@ -260,7 +264,8 @@ public class Juego extends Applet implements Runnable, KeyListener {
         //Checo clision de Juanitos con piso
         for(Base basJuanito:lklJuanitos) {
             if (basJuanito.getY() + basJuanito.getAlto() > getHeight()) {
-                int iPosRandX  = (int) (Math.random() * getWidth());
+                int iPosRandX  = (int) (Math.random() * (getWidth() - 
+                        basJuanito.getAncho()));
                 int iPosRandY  = (int) (Math.random() * getHeight()) * -1;
                 basJuanito.setX(iPosRandX);
                 basJuanito.setY(iPosRandY);
