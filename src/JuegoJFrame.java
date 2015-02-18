@@ -135,7 +135,23 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
      */
     @Override
     public void run() {
-     
+        /* mientras dure el juego, se actualizan posiciones de jugadores
+           se checa si hubo colisiones para desaparecer jugadores o corregir
+           movimientos y se vuelve a pintar todo
+        */ 
+        while (!bFin) {
+            actualiza();
+            checaColision();
+            repaint();
+            try	{
+                // El thread se duerme.
+                Thread.sleep (20);
+            }
+            catch (InterruptedException iexError) {
+                System.out.println("Hubo un error en el juego " + 
+                        iexError.toString());
+            }
+	}
     }
         
     
