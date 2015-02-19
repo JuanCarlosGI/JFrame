@@ -24,6 +24,9 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
 
     private final int iMAXANCHO = 10; // maximo numero de personajes por ancho
     private final int iMAXALTO = 8;  // maxuimo numero de personajes por alto
+    private final int iHeight=500; // alto del JFrame
+    private final int iWidth=800; // ancho del JFrame
+    
     private Base basMalo;         // Objeto malo
     
     /* objetos para manejar el buffer del Applet y este no parpadee */
@@ -88,14 +91,15 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         int iRandom = (int) (Math.random() * 2) + 4; //Cantidad de Juanitos
         for(int iI = 0; iI < iRandom ; iI++) {
             int iPosRandX  = (int) (Math.random() * iMAXANCHO);
-            int iPosRandY  = (int) (Math.random() * getHeight()) * -1;
+            int iPosRandY  = (int) (Math.random() * iHeight) * -1;
             
-            Base basJuanito = new Base(iPosRandX, iPosRandY,imgJuanito);
-            iPosRandX = (int) (Math.random() * (getWidth() - 
+            Base basJuanito = new Base(iPosRandX, iPosRandY,
+                     iWidth / iMAXANCHO, iHeight / iMAXALTO,imgJuanito);
+            iPosRandX = (int) (Math.random() * (iWidth - 
                         basJuanito.getAncho()));
             
             
-            basJuanito.setX(iPosRandX * (getWidth() / iMAXANCHO)  );
+            basJuanito.setX(iPosRandX * (iWidth / iMAXANCHO)  );
             lklJuanitos.add(basJuanito);
         }
         
@@ -108,10 +112,12 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         //Se crean los fantasmas
         iRandom = (int) (Math.random() * 3) + 5; //Cantidad de fantasmas
         for(int iI = 0; iI < iRandom ; iI++) {
-            int iPosRandX  = (int) (Math.random() * getWidth()) * -1;
-            int iPosRandY  = (int) (Math.random() * (getHeight()));
-            Base basFantasma = new Base(iPosRandX, iPosRandY,imgFantasmita);
-            iPosRandY = (int) (Math.random() * (getHeight() - 
+            int iPosRandX  = (int) (Math.random() * iWidth) * -1;
+            int iPosRandY  = (int) (Math.random() * (iHeight));
+            Base basFantasma = new Base(iPosRandX, iPosRandY,
+                     iWidth / iMAXANCHO, iHeight / iMAXALTO,
+                    imgFantasmita);
+            iPosRandY = (int) (Math.random() * (iHeight - 
                     basFantasma.getAlto()));
             basFantasma.setY(iPosRandY);
             lklFantasmas.add(basFantasma);
@@ -122,9 +128,10 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
                 .getResource("Images/Chimpy1.png"));
         
         // se crea el objeto para malo 
-        int iPosX = (iMAXANCHO - 1) * getWidth() / iMAXANCHO;
-        int iPosY = (iMAXALTO - 1) * getHeight() / iMAXALTO;        
-	basMalo = new Base(getWidth() /2,getHeight() / 2,imgChimpy);
+        int iPosX = (iMAXANCHO - 1) * iWidth / iMAXANCHO;
+        int iPosY = (iMAXALTO - 1) * iHeight / iMAXALTO;        
+	basMalo = new Base(iWidth /2,iHeight / 2,
+                 iWidth / iMAXANCHO, iHeight / iMAXALTO,imgChimpy);
         
         //defino el sonido 1
         scSonidoChimpy1 = new SoundClip("monkey1.wav");
@@ -231,9 +238,9 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
             basMalo.setY(0);
         }	
         //Si se sale hacia abajo
-        if (basMalo.getY() + basMalo.getAlto() > getHeight()) {
+        if (basMalo.getY() + basMalo.getAlto() > iHeight) {
             iDireccion = 0;
-            basMalo.setY(getHeight() - basMalo.getAlto());
+            basMalo.setY(iHeight - basMalo.getAlto());
         }
         //Si se sale hacia la izquierda
         if (basMalo.getX() < 0) {
@@ -241,18 +248,18 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
             basMalo.setX(0);
         }
         //Si se sale hacia la derecha
-        if (basMalo.getX() + basMalo.getAncho() > getWidth()) { 
+        if (basMalo.getX() + basMalo.getAncho() > iWidth) { 
             iDireccion = 0;
-            basMalo.setX(getWidth() - basMalo.getAncho());
+            basMalo.setX(iWidth - basMalo.getAncho());
         }
         
         //Checo colision con los juanitos
         for(Base basJuanito:lklJuanitos) {
             if (basJuanito.intersecta(basMalo)) {
                 iJuanitosChocaron++;
-                int iPosRandX  = (int) (Math.random() * (getWidth() - 
+                int iPosRandX  = (int) (Math.random() * (iWidth - 
                         basJuanito.getAncho()));
-                int iPosRandY  = (int) (Math.random() * getHeight()) * -1;
+                int iPosRandY  = (int) (Math.random() * iHeight) * -1;
                 basJuanito.setX(iPosRandX);
                 basJuanito.setY(iPosRandY);
                 scSonidoChimpy1.play();
@@ -266,8 +273,8 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         //Checo cliosion con fantasmas
         for(Base basFantasma:lklFantasmas) {
             if (basFantasma.intersecta(basMalo)) {
-                int iPosRandX  = (int) (Math.random() * getWidth()) * -1;
-                int iPosRandY  = (int) (Math.random() * (getHeight() -
+                int iPosRandX  = (int) (Math.random() * iWidth) * -1;
+                int iPosRandY  = (int) (Math.random() * (iHeight -
                         basFantasma.getAlto()));
                 basFantasma.setX(iPosRandX);
                 basFantasma.setY(iPosRandY);
@@ -278,10 +285,10 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         
         //Checo clision de Juanitos con piso
         for(Base basJuanito:lklJuanitos) {
-            if (basJuanito.getY() + basJuanito.getAlto() > getHeight()) {
-                int iPosRandX  = (int) (Math.random() * (getWidth() - 
+            if (basJuanito.getY() + basJuanito.getAlto() > iHeight) {
+                int iPosRandX  = (int) (Math.random() * (iWidth - 
                         basJuanito.getAncho()));
-                int iPosRandY  = (int) (Math.random() * getHeight()) * -1;
+                int iPosRandY  = (int) (Math.random() * iHeight) * -1;
                 basJuanito.setX(iPosRandX);
                 basJuanito.setY(iPosRandY);
             }
@@ -289,9 +296,9 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         
         //Checo colision de fantasmas con pared
         for(Base basFantasma:lklFantasmas) {
-            if (basFantasma.getX() + basFantasma.getAncho() > getWidth()){
-                int iPosRandX  = (int) (Math.random() * getWidth()) * -1;
-                int iPosRandY  = (int) (Math.random() * (getHeight() -
+            if (basFantasma.getX() + basFantasma.getAncho() > iWidth){
+                int iPosRandX  = (int) (Math.random() * iWidth) * -1;
+                int iPosRandY  = (int) (Math.random() * (iHeight -
                         basFantasma.getAlto()));
                 basFantasma.setX(iPosRandX);
                 basFantasma.setY(iPosRandY);
@@ -352,23 +359,22 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
             //Dibuja la imagen de los Juanitos
             for (Base basJuanito:lklJuanitos) {
                 
-                graDibujo.drawImage(basJuanito.getImagen(), basJuanito.getX(),
-                        basJuanito.getY(), this);
+               
+                basJuanito.paint(graDibujo, this);
             }
             //dibujo a los fantasmas
             for (Base basFantasma:lklFantasmas) {
                 
-                graDibujo.drawImage(basFantasma.getImagen(), basFantasma.getX(),
-                        basFantasma.getY(), this);
+                
+                basFantasma.paint(graDibujo, this);
             }
             //Dibuja la imagen de malo en el Applet
             
-            
-            graDibujo.drawImage(basMalo.getImagen(), basMalo.getX(),
-                        basMalo.getY(), this);
+           
+            basMalo.paint(graDibujo,this);
             graDibujo.setColor(Color.RED); //Escribo en color rojo
             graDibujo.drawString("Vidas: " + iVidas, 10, 40);   //Escribo vidas
-            graDibujo.drawString("Puntos: " + iScore, 10, 60);  // escribo score
+            graDibujo.drawString("Puntos: " + iScore +" "+ iHeight, 10, 60);  // escribo score
             
         } // sino se ha cargado se dibuja un mensaje 
         else {
@@ -379,7 +385,7 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         if (bFin){  //Dibujo el fin del juego
             URL urlImagenFin = this.getClass().getResource("game Over.png");
             graDibujo.drawImage(Toolkit.getDefaultToolkit().getImage(urlImagenFin)
-                    , getWidth() /2, getHeight() / 2, this);
+                    , iWidth /2, iHeight / 2, this);
         }
         
     }
@@ -465,7 +471,7 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         
     	// TODO code application logic here
         JuegoJFrame jjfJuego = new JuegoJFrame();
-    	jjfJuego.setSize(800, 600); // crea la ventana de 800x500
+    	jjfJuego.setSize(800, 500); // crea la ventana de 800x500
     	jjfJuego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	jjfJuego.setVisible(true);
     }
