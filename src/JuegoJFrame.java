@@ -17,15 +17,10 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import javax.swing.JFrame;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
- * @author JoseFernando
+ * @author Jose Fernando Davila 999281 y Juan Carlos Guzmán 1175826
  */
 public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
 
@@ -101,7 +96,7 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         iTotalJuanitos = (int) (Math.random() * 2) + 4; //Cantidad de Juanitos
         
         for(int iI = 0; iI < iTotalJuanitos ; iI++) {
-            int iPosRandX  = (int) (Math.random() * iMAXANCHO);
+            int iPosRandX  = (int) (Math.random() * (iWidth));
             int iPosRandY  = (int) (Math.random() * iHeight) * -1;
             
             Base basJuanito = new Base(iPosRandX, iPosRandY,
@@ -110,7 +105,7 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
                         basJuanito.getAncho()));
             
             
-            basJuanito.setX(iPosRandX * (iWidth / iMAXANCHO)  );
+            basJuanito.setX(iPosRandX);
             lklJuanitos.add(basJuanito);
         }
         
@@ -384,8 +379,8 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
            
             basMalo.paint(graDibujo,this);
             graDibujo.setColor(Color.RED); //Escribo en color rojo
-            graDibujo.drawString("Vidas: " + iVidas, 10, 40);   //Escribo vidas
-            graDibujo.drawString("Puntos: " + iScore, 10, 60);  // escribo score
+            graDibujo.drawString("Vidas: " + iVidas, 10, 60);   //Escribo vidas
+            graDibujo.drawString("Puntos: " + iScore, 10, 80);  // escribo score
             
         } // sino se ha cargado se dibuja un mensaje 
         else {
@@ -477,7 +472,7 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
      */
     public void leeArchivo() throws IOException{
     	BufferedReader fileIn;
-        try{
+        try{    //Abro el larchivo o, si no existe, lo creo
     		fileIn = new BufferedReader(new FileReader(nombreArchivo));
     	} catch (FileNotFoundException e){
     		File filArchivo = new File(nombreArchivo);
@@ -519,7 +514,7 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
                 
                 lklFantasmas.add(basFantasma);
             }
-            // los fantasmas
+            // los Juanitos
             iDato=Integer.parseInt(fileIn.readLine());
             iTotalJuanitos=iDato;
                 
