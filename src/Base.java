@@ -4,9 +4,9 @@
  * Modela la definición de todos los objetos de tipo
  * <code>Base</code>
  *
- * @author XXXXXXX
- * @version 99 
- * @date 99/XXX/99
+ * @author Jose Fernando Davila
+ * @version 1.0
+ * @date 18/02/2015
  */
 import java.awt.Graphics;
 import java.awt.Image;
@@ -18,9 +18,7 @@ public class Base {
 
     private int iX;     //posicion en x.       
     private int iY;     //posicion en y.
-    private int iAncho; //ancho del objeto
-    private int iAlto; //largo del objeto
-    private Image imaImagen;	//imagen.
+    private ImageIcon imiIcono;	//icono.
 
     /**
      * Base
@@ -30,19 +28,31 @@ public class Base {
      * 
      * @param iX es la <code>posicion en x</code> del objeto.
      * @param iY es la <code>posicion en y</code> del objeto.
-     * @param iAncho es el <code>ancho</code> del objeto.
-     * @param iAlto es el <code>Largo</code> del objeto.
      * @param imaImagen es la <code>imagen</code> del objeto.
      * 
      */
-    public Base(int iX, int iY , int iAncho, int iAlto,Image imaImagen) {
+    public Base(int iX, int iY ,Image imaImagen) {
         this.iX = iX;
         this.iY = iY;
-        this.iAncho = iAncho;
-        this.iAlto = iAlto;
-        this.imaImagen = imaImagen;
+        imiIcono = new ImageIcon(imaImagen);
     }
 
+    /**
+     * Base
+     * 
+     * Metodo constructor usado para crear el objeto animal
+     * creando el icono de imagen de un objeto igual
+     * 
+     * @param iX es la <code>posicion en x</code> del objeto.
+     * @param iY es la <code>posicion en y</code> del objeto.
+     * @param imiIcono es la <code>imagen tipo icono</code> del objeto.
+     * 
+     */
+    public Base(int iX, int iY ,ImageIcon imiIcono) {
+        this.iX = iX;
+        this.iY = iY;
+        this.imiIcono = imiIcono;
+    }
     
     /**
      * setX
@@ -93,6 +103,30 @@ public class Base {
     }
 
     /**
+     * setImageIcon
+     * 
+     * Metodo modificador usado para cambiar el icono del objeto
+     * 
+     * @param imiIcono es el <code>icono</code> del objeto.
+     * 
+     */
+    public void setImageIcon(ImageIcon imiIcono) {
+        this.imiIcono = imiIcono;
+    }
+
+    /**
+     * getImageIcon
+     * 
+     * Metodo de acceso que regresa el icono del objeto 
+     * 
+     * @return imiIcono es el <code>icono</code> del objeto.
+     * 
+     */
+    public ImageIcon getImageIcon() {
+        return imiIcono;
+    }
+
+    /**
      * setImagen
      * 
      * Metodo modificador usado para cambiar el icono de imagen del objeto
@@ -102,7 +136,7 @@ public class Base {
      * 
      */
     public void setImagen(Image imaImagen) {
-        this.imaImagen = imaImagen;
+        this.imiIcono = new ImageIcon(imaImagen);
     }
 
     /**
@@ -114,7 +148,7 @@ public class Base {
      * 
      */
     public Image getImagen() {
-        return imaImagen;
+        return imiIcono.getImage();
     }
 
     /**
@@ -122,11 +156,11 @@ public class Base {
      * 
      * Metodo de acceso que regresa el ancho del icono 
      * 
-     * @return un <code>entero</code> que es el ancho de la imagen.
+     * @return un <code>entero</code> que es el ancho del icono.
      * 
      */
     public int getAncho() {
-        return iAncho;
+        return imiIcono.getIconWidth();
     }
 
     /**
@@ -134,11 +168,11 @@ public class Base {
      * 
      * Metodo que  da el alto del icono 
      * 
-     * @return un <code>entero</code> que es el alto de la imagen.
+     * @return un <code>entero</code> que es el alto del icono.
      * 
      */
     public int getAlto() {
-        return iAlto;
+        return imiIcono.getIconHeight();
     }
     
     /**
@@ -152,23 +186,8 @@ public class Base {
      * 
      */
     public void paint(Graphics graGrafico, ImageObserver imoObserver) {
-        graGrafico.drawImage(getImagen(), getX(), getY(), getAncho(), getAlto(), imoObserver);
+        graGrafico.drawImage(getImagen(), getX(), getY(), imoObserver);
     }
-     /**
-     * paint
-     * 
-     * Metodo para pintar el animal
-     * 
-     * @param graGrafico    objeto de la clase <code>Graphics</code> para graficar
-     * @param imoObserver  objeto de la clase <code>ImageObserver</code> es el 
-     *    Applet donde se pintara
-     * @param animObj objeto de la clase <code>Animacion</code> para obtener las imagenes
-     * 
-     */
-    public void paint(Graphics graGrafico, ImageObserver imoObserver, Animacion animObj) {
-        graGrafico.drawImage(animObj.getImagen(), getX(), getY(), getAncho(), getAlto(), imoObserver);
-    }
-
 
     /**
      * equals
@@ -211,17 +230,46 @@ public class Base {
                 " ancho: " + this.getAncho() + " alto: " + this.getAlto();
     }
     
+    
+    /*
+     * intersecta
+     *
+     * Metodo que checa si un animal intersecta a otro
+     *
+     * @param objObjeto es un objeto de la clase <code>Object</code>
+     * @return un boleano para saber si intersecta o no
+     */
     public boolean intersecta(Object objObjeto) {
         if (objObjeto instanceof Base) {
             Rectangle rctEsteObjeto = new Rectangle(this.getX(), this.getY(),
                     this.getAncho(), this.getAlto());
-            Base aniObjeto = (Base) objObjeto;
-            Rectangle rctObjetoParam = new Rectangle(aniObjeto.getX(),
-                    aniObjeto.getY(), aniObjeto.getAncho(), aniObjeto.getAlto());
+            Base basObjeto = (Base) objObjeto;
+            Rectangle rctObjetoParam = new Rectangle(basObjeto.getX(),
+                    basObjeto.getY(), basObjeto.getAncho(), basObjeto.getAlto());
             return rctEsteObjeto.intersects(rctObjetoParam);
         } 
         else {
             return false;
         }
     }
+    /*
+     * contains
+     *
+     * Metodo que checa si la posicion X y Y esta dentro de un objeto
+     *
+     * @param iX es la <code>posicion en x</code>
+     * @param iY es la <code>posicion en y</code>
+     * @return un boleano para saber si el objeto lo contiene o no
+     */
+    public boolean contains(int iX, int iY) {
+        
+        
+        Rectangle rctEsteObjeto = new Rectangle(this.getX(), this.getY(),
+                this.getAncho(), this.getAlto());
+
+        return rctEsteObjeto.contains(iX, iY);
+        
+    }
+    
+    
 }

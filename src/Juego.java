@@ -78,8 +78,7 @@ public class Juego extends Applet implements Runnable, KeyListener {
         for(int iI = 0; iI < iRandom ; iI++) {
             int iPosRandX  = (int) (Math.random() * getWidth());
             int iPosRandY  = (int) (Math.random() * getHeight()) * -1;
-            Base basJuanito = new Base(iPosRandX, iPosRandY, getWidth() / iMAXANCHO,
-                getHeight() / iMAXALTO,
+            Base basJuanito = new Base(iPosRandX, iPosRandY,
                 Toolkit.getDefaultToolkit().getImage(urlImagenPrincipal));
             iPosRandX = (int) (Math.random() * (getWidth() - 
                         basJuanito.getAncho()));
@@ -92,8 +91,7 @@ public class Juego extends Applet implements Runnable, KeyListener {
         for(int iI = 0; iI < iRandom ; iI++) {
             int iPosRandX  = (int) (Math.random() * getWidth()) * -1;
             int iPosRandY  = (int) (Math.random() * (getHeight()));
-            Base basFantasma = new Base(iPosRandX, iPosRandY, getWidth() / iMAXANCHO,
-                getHeight() / iMAXALTO,
+            Base basFantasma = new Base(iPosRandX, iPosRandY,
                 Toolkit.getDefaultToolkit().getImage(urlImagenFantasma));
             iPosRandY = (int) (Math.random() * (getHeight() - 
                     basFantasma.getAlto()));
@@ -107,8 +105,7 @@ public class Juego extends Applet implements Runnable, KeyListener {
         // se crea el objeto para malo 
         int iPosX = (iMAXANCHO - 1) * getWidth() / iMAXANCHO;
         int iPosY = (iMAXALTO - 1) * getHeight() / iMAXALTO;        
-	basMalo = new Base(getWidth() /2,getHeight() / 2, getWidth() / iMAXANCHO,
-                getHeight() / iMAXALTO,
+	basMalo = new Base(getWidth() /2,getHeight() / 2,
                 Toolkit.getDefaultToolkit().getImage(urlImagenMalo));
         
         //defino el sonido 1

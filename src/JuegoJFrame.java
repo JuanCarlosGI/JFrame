@@ -85,17 +85,17 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
 		
         
         // se crean a los Juanitos
-        int iRandom = (int) (Math.random() * 6) + 10; //Cantidad de Juanitos
+        int iRandom = (int) (Math.random() * 2) + 4; //Cantidad de Juanitos
         for(int iI = 0; iI < iRandom ; iI++) {
-            int iPosRandX  = (int) (Math.random() * getWidth());
+            int iPosRandX  = (int) (Math.random() * iMAXANCHO);
             int iPosRandY  = (int) (Math.random() * getHeight()) * -1;
             
-            Base basJuanito = new Base(iPosRandX, iPosRandY, getWidth() / iMAXANCHO,
-                getHeight() / iMAXALTO,
-                imgJuanito);
+            Base basJuanito = new Base(iPosRandX, iPosRandY,imgJuanito);
             iPosRandX = (int) (Math.random() * (getWidth() - 
                         basJuanito.getAncho()));
-            basJuanito.setX(iPosRandX);
+            
+            
+            basJuanito.setX(iPosRandX * (getWidth() / iMAXANCHO)  );
             lklJuanitos.add(basJuanito);
         }
         
@@ -106,13 +106,11 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         
         
         //Se crean los fantasmas
-        iRandom = (int) (Math.random() * 3) + 8; //Cantidad de fantasmas
+        iRandom = (int) (Math.random() * 3) + 5; //Cantidad de fantasmas
         for(int iI = 0; iI < iRandom ; iI++) {
             int iPosRandX  = (int) (Math.random() * getWidth()) * -1;
             int iPosRandY  = (int) (Math.random() * (getHeight()));
-            Base basFantasma = new Base(iPosRandX, iPosRandY, getWidth() / iMAXANCHO,
-                getHeight() / iMAXALTO,
-                imgFantasmita);
+            Base basFantasma = new Base(iPosRandX, iPosRandY,imgFantasmita);
             iPosRandY = (int) (Math.random() * (getHeight() - 
                     basFantasma.getAlto()));
             basFantasma.setY(iPosRandY);
@@ -126,8 +124,7 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         // se crea el objeto para malo 
         int iPosX = (iMAXANCHO - 1) * getWidth() / iMAXANCHO;
         int iPosY = (iMAXALTO - 1) * getHeight() / iMAXALTO;        
-	basMalo = new Base(getWidth() /2,getHeight() / 2, getWidth() / iMAXANCHO,
-                getHeight() / iMAXALTO,imgChimpy);
+	basMalo = new Base(getWidth() /2,getHeight() / 2,imgChimpy);
         
         //defino el sonido 1
         scSonidoChimpy1 = new SoundClip("monkey1.wav");
@@ -372,6 +369,7 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
             graDibujo.setColor(Color.RED); //Escribo en color rojo
             graDibujo.drawString("Vidas: " + iVidas, 10, 40);   //Escribo vidas
             graDibujo.drawString("Puntos: " + iScore, 10, 60);  // escribo score
+            
         } // sino se ha cargado se dibuja un mensaje 
         else {
                 //Da un mensaje mientras se carga el dibujo	
@@ -467,7 +465,7 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         
     	// TODO code application logic here
         JuegoJFrame jjfJuego = new JuegoJFrame();
-    	jjfJuego.setSize(800, 500); // crea la ventana de 800x500
+    	jjfJuego.setSize(800, 600); // crea la ventana de 800x500
     	jjfJuego.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	jjfJuego.setVisible(true);
     }
