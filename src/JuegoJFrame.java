@@ -5,8 +5,15 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.LinkedList;
 import javax.swing.JFrame;
 
@@ -48,6 +55,9 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
     private int iJuanitosChocaron;  //Cuantos Juanitos han chocado
     private int iPausa; //Para ver si está en pausa
     private boolean bFin; //Checa si se terminó el juego
+    private int iTotalFantasmitas; // total de fantasmas que hay
+    private int iTotalJuanitos; // total de juanitos que hay
+    private String nombreArchivo;    //Nombre del archivo.
     
     private Image imgChimpy;
     private Image imgFantasmita;
@@ -79,7 +89,7 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         iVidas = (int) (Math.random() * 2) + 3; //Inicio las vidas entre 3 y 5
         iScore = 0; //Inicio el score
                 
-        
+        nombreArchivo= "UltimaPartida.txt";    //Nombre del archivo.
        
         imgJuanito = Toolkit.getDefaultToolkit().getImage(this.getClass()
                 .getResource("Images/juanito1.png"));
@@ -88,8 +98,9 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
 		
         
         // se crean a los Juanitos
-        int iRandom = (int) (Math.random() * 2) + 4; //Cantidad de Juanitos
-        for(int iI = 0; iI < iRandom ; iI++) {
+        iTotalJuanitos = (int) (Math.random() * 2) + 4; //Cantidad de Juanitos
+        
+        for(int iI = 0; iI < iTotalJuanitos ; iI++) {
             int iPosRandX  = (int) (Math.random() * iMAXANCHO);
             int iPosRandY  = (int) (Math.random() * iHeight) * -1;
             
@@ -110,8 +121,8 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         
         
         //Se crean los fantasmas
-        iRandom = (int) (Math.random() * 3) + 5; //Cantidad de fantasmas
-        for(int iI = 0; iI < iRandom ; iI++) {
+        iTotalFantasmitas = (int) (Math.random() * 3) + 5; //Cantidad de fantasmas
+        for(int iI = 0; iI < iTotalFantasmitas ; iI++) {
             int iPosRandX  = (int) (Math.random() * iWidth) * -1;
             int iPosRandY  = (int) (Math.random() * (iHeight));
             Base basFantasma = new Base(iPosRandX, iPosRandY,
@@ -374,7 +385,7 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
             basMalo.paint(graDibujo,this);
             graDibujo.setColor(Color.RED); //Escribo en color rojo
             graDibujo.drawString("Vidas: " + iVidas, 10, 40);   //Escribo vidas
-            graDibujo.drawString("Puntos: " + iScore +" "+ iHeight, 10, 60);  // escribo score
+            graDibujo.drawString("Puntos: " + iScore, 10, 60);  // escribo score
             
         } // sino se ha cargado se dibuja un mensaje 
         else {
@@ -413,6 +424,24 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
         if (keyEvent.getKeyCode() == KeyEvent.VK_P) {
             iPausa = iPausa * -1;
         }
+        if (keyEvent.getKeyCode() == KeyEvent.VK_G) {
+            try{
+		// si se preisona la G se graba el archivo con todos los datos
+		grabaArchivo();
+                
+            }catch(IOException expExeption){
+                    
+            }
+        }
+        if (keyEvent.getKeyCode() == KeyEvent.VK_C) {
+            try{
+		// si se preisona la C se carga el archivo con todos los datos
+		leeArchivo();
+                
+            }catch(IOException expExeption){
+                    
+            }
+         }
         if (keyEvent.getKeyCode() == KeyEvent. VK_ESCAPE) {
             bFin = true;    //Cambio direccion
         }
@@ -447,7 +476,71 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
      * @throws IOException
      */
     public void leeArchivo() throws IOException{
-    	
+    	BufferedReader fileIn;
+        try{
+    		fileIn = new BufferedReader(new FileReader(nombreArchivo));
+    	} catch (FileNotFoundException e){
+    		File filArchivo = new File(nombreArchivo);
+    		PrintWriter fileOut = new PrintWriter(filArchivo);
+    		fileOut.println("");
+    		fileOut.close();
+    		fileIn = new BufferedReader(new FileReader(nombreArchivo));
+    	}
+    	String sDato = fileIn.readLine();
+        int iDato;
+    	if (!sDato.equals("")){
+    		
+            // establece el score y las vidas
+            iDato=Integer.parseInt(sDato);
+            iScore=iDato;
+            iDato=Integer.parseInt(fileIn.readLine());  
+            iVidas=iDato;
+            iDato=Integer.parseInt(fileIn.readLine());  
+            iDireccion=iDato;
+            iDato=Integer.parseInt(fileIn.readLine());  
+            iPausa=iDato;
+            // establece x y y de basMalo
+            iDato=Integer.parseInt(fileIn.readLine()); 
+            basMalo.setX(iDato);
+            iDato=Integer.parseInt(fileIn.readLine()); 
+            basMalo.setY(iDato);
+               
+            // los fantasmas
+            iDato=Integer.parseInt(fileIn.readLine());
+            iTotalFantasmitas=iDato;
+                
+            lklFantasmas.clear();
+            for(int iI = 0; iI < iTotalFantasmitas ; iI++) {
+                
+                int iPosX=Integer.parseInt(fileIn.readLine());
+                int iPosY=Integer.parseInt(fileIn.readLine());
+                Base basFantasma = new Base(iPosX, iPosY,
+                    iWidth / iMAXANCHO, iHeight / iMAXALTO,imgFantasmita);
+                
+                lklFantasmas.add(basFantasma);
+            }
+            // los fantasmas
+            iDato=Integer.parseInt(fileIn.readLine());
+            iTotalJuanitos=iDato;
+                
+            lklJuanitos.clear();
+            for(int iI = 0; iI < iTotalJuanitos ; iI++) {
+                
+                int iPosX=Integer.parseInt(fileIn.readLine());
+                int iPosY=Integer.parseInt(fileIn.readLine());
+            
+                Base basJuanito = new Base(iPosX, iPosY,
+                        iWidth / iMAXANCHO, iHeight / iMAXALTO,imgJuanito);
+
+                lklJuanitos.add(basJuanito);
+            }
+                
+            fileIn.close();
+                
+    		
+    	}
+        
+        
     }
 	
     /**
@@ -456,7 +549,30 @@ public class JuegoJFrame extends JFrame implements Runnable, KeyListener {
      * @throws IOException
      */
     public void grabaArchivo() throws IOException{
-    	
+        
+    	PrintWriter fileOut = new PrintWriter(new FileWriter(nombreArchivo));
+        fileOut.println("" + iScore);
+        fileOut.println("" + iVidas);
+        fileOut.println("" + iDireccion);
+        fileOut.println("" + iPausa);
+        fileOut.println("" + basMalo.getX());
+        fileOut.println("" + basMalo.getY());
+        fileOut.println("" + iTotalFantasmitas);
+        
+        for(Base basFantasmita:lklFantasmas) {
+            
+            fileOut.println("" + basFantasmita.getX());
+            fileOut.println("" + basFantasmita.getY());
+        }
+        fileOut.println("" + iTotalJuanitos);
+        for(Base basJuanito:lklJuanitos) {
+            
+            fileOut.println("" + basJuanito.getX());
+            fileOut.println("" + basJuanito.getY());
+        }
+        
+       
+    	fileOut.close();	
         
         
     }
